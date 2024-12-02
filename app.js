@@ -107,12 +107,15 @@ app.get("/students/:id", (req, res) => {
   const studentId = req.params.id;
   const student = students[studentId];
 
-  if (!student) {
-    return res.status(404).send("Student not found");
-  }
-
   res.render("modify", { student, studentId });
 });
+
+//=============================DELETE===================================//
+app.get("/delete", (req, res) => {
+  res.render("delete");
+});
+
+//app.delete();
 
 //=============================This always runs at the end======================================//
 app.use((req, res) => {
