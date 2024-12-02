@@ -66,11 +66,6 @@ app.get("/students", (req, res) => {
 });
 
 //==========================POST=====================================//
-
-app.get("/enroll", (req, res) => {
-  res.render("enroll");
-});
-
 app.post("/students", (req, res) => {
   const newStudent = {
     name: req.body.name,
@@ -85,37 +80,42 @@ app.post("/students", (req, res) => {
 });
 
 //===========================Edit======================================//
-
-app.get("/modify", (req, res) => {
-  res.render("modify");
-});
-
 app.put("/students/:id", (req, res) => {
   const studentId = parseInt(req.params.id);
-  const student = students[studentId];
 
-  student.name = req.body.name;
-  student.email = req.body.email;
-  student.studentID = req.body.studentID;
-  student.dateOfBirth = req.body.dateOfBirth;
-  student.graduated = req.body.graduated === "on";
+  if (req.params.id >= 0 && req.params.id < students.length) {
+    const updatedStudent = {
+      name: req.body.name,
+      email: req.body.email,
+      studentID: req.body.studentID,
+      dateOfBirth: req.body.dateOfBirth,
+      graduated: req.body.graduated === "on",
+    };
 
-  res.redirect("/students");
+    students[studentId] = updatedStudent;
+    res.redirect("/students");
+  } else {
+    res.send("Enter a valid ID");
+  }
 });
 
-app.get("/students/:id", (req, res) => {
-  const studentId = req.params.id;
-  const student = students[studentId];
-
-  res.render("modify", { student, studentId });
+app.get("/students/:id/edit", (req, res) => {
+  const studentId = parseInt(req.params.id);
+  res.render("modify", { student: students[studentId], index: studentId });
 });
 
 //=============================DELETE===================================//
-app.get("/delete", (req, res) => {
-  res.render("delete");
-});
 
-//app.delete();
+app.delete("/students/:id", (req, res) => {
+  const studentId = parseInt(req.params.id);
+
+  if (req.params.id >= 0 && req.params.id < students.length) {
+    students.splice(studentId, 1);
+    res.redirect("/students");
+  } else {
+    res.send("Enter a valid ID");
+  }
+});
 
 //=============================This always runs at the end======================================//
 app.use((req, res) => {
@@ -125,3 +125,34 @@ app.use((req, res) => {
   res.status(404);
   res.json({ error: "Resources not found" });
 });
+
+//=====================================================================
+// app.get("/modify", (req, res) => {
+//   res.render("modify");
+// });
+
+// app.put("/students/:id", (req, res) => {
+//   const studentId = parseInt(req.params.id);
+
+//   if (req.params.id >= 0 && req.params.id < students.length) {
+//     const updatedStudent = {
+//       name: req.body.name,
+//       email: req.body.email,
+//       studentID: req.body.studentID,
+//       dateOfBirth: req.body.dateOfBirth,
+//       graduated: req.body.graduated === "on",
+//     };
+
+//     students[studentId] = updatedStudent;
+//     res.redirect("/students");
+//   } else {
+//     res.send("Enter a valid ID");
+//   }
+// });
+
+// app.get("/students/:id/edit", (req, res) => {
+//   const studentId = parseInt(req.params.id);
+//   //const student = students[studentId];
+
+//   res.render("modify", { student: students[studentId], index: studentId });
+// });

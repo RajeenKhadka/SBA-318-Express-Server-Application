@@ -1,6 +1,6 @@
 <h1>Students List</h1>
 <ul>
-  <% students.forEach(student => { %>
+  <% students.forEach((student, index) => { %>
   <li>
     <strong>Name:</strong> <%= student.name %><br />
     <strong>Email:</strong> <%= student.email %><br />
@@ -8,5 +8,41 @@
     <strong>DOB:</strong> <%= student.dateOfBirth %><br />
     <strong>Graduated:</strong> <%= student.graduated ? "Yes" : "No" %>
   </li>
+  <form action="/students/<%= index %>?_method=DELETE" method="POST">
+    <button type="submit">Remove</button>
+  </form>
+
+  <form action="/students/<%= index %>/edit" method="GET">
+    <button type="submit">Edit</button>
+  </form>
   <% }) %>
 </ul>
+
+<form action="/students" method="POST">
+  <label>
+    Name:
+    <input type="text" name="name" required />
+  </label>
+  <br />
+  <label>
+    Email:
+    <input type="email" name="email" required />
+  </label>
+  <br />
+  <label>
+    Student ID:
+    <input type="text" name="studentID" required />
+  </label>
+  <br />
+  <label>
+    Date of Birth:
+    <input type="date" name="dateOfBirth" required />
+  </label>
+  <br />
+  <label>
+    Graduated:
+    <input type="checkbox" name="graduated" />
+  </label>
+  <br />
+  <input type="submit" value="Add Student" />
+</form>
