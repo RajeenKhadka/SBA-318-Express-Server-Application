@@ -1,0 +1,12 @@
+<h1>Students List</h1>
+<ul>
+  <% students.forEach(student => { %>
+  <li>
+    <strong>Name:</strong> <%= student.name %><br />
+    <strong>Email:</strong> <%= student.email %><br />
+    <strong>ID:</strong> <%= student.studentID %><br />
+    <strong>DOB:</strong> <%= student.dateOfBirth %><br />
+    <strong>Graduated:</strong> <%= student.graduated ? "Yes" : "No" %>
+  </li>
+  <% }) %>
+</ul>
