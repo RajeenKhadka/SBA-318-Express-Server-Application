@@ -1,0 +1,57 @@
+<head>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+<h1>Edit Teacher</h1>
+<form action="/teachers/<%= index %>?_method=PUT" method="POST">
+  <label>
+    Name:
+    <input type="text" name="name" value="<%= teacher.name %>" required />
+  </label>
+  <br />
+  <label>
+    Email:
+    <input type="email" name="email" value="<%= teacher.email %>" required />
+  </label>
+  <br />
+  <label>
+    Teacher ID:
+    <input
+      type="text"
+      name="teacherID"
+      value="<%= teacher.teacherID %>"
+      required
+    />
+  </label>
+  <br />
+  <label>
+    Subject:
+    <input type="text" name="subject" value="<%= teacher.subject %>" required />
+  </label>
+  <br />
+  <label>
+    Years of Experience:
+    <input
+      type="number"
+      name="yearsOfExperience"
+      value="<%= teacher.yearsOfExperience %>"
+      required
+    />
+  </label>
+  <br />
+  <label>
+    Date of Hire:
+    <input
+      type="date"
+      name="dateOfHire"
+      value="<%= teacher.dateOfHire %>"
+      required
+    />
+  </label>
+  <br />
+  <label>
+    Full Time: <input type="checkbox" name="isFullTime" <%= teacher.isFullTime ?
+    "checked" : "" %> />
+  </label>
+  <br />
+  <input type="submit" value="Update Teacher" />
+</form>

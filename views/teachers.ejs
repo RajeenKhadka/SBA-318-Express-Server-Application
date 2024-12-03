@@ -1,0 +1,56 @@
+<h1>Teachers List</h1>
+<ul>
+  <% teachers.forEach((teacher, index) => { %>
+  <li>
+    <strong>Teacher ID:</strong> <%= teacher.teacherID %><br />
+    <strong>Name:</strong> <%= teacher.name %><br />
+    <strong>Email:</strong> <%= teacher.email %><br />
+    <strong>Subject:</strong> <%= teacher.subject %><br />
+    <strong>Years of Experience:</strong> <%= teacher.yearsOfExperience %><br />
+    <strong>Date of Hire:</strong> <%= teacher.dateOfHire %><br />
+    <strong>Full Time:</strong> <%= teacher.isFullTime ? "Yes" : "No" %>
+  </li>
+  <form action="/teachers/<%= index %>?_method=DELETE" method="POST">
+    <button type="submit">Remove</button>
+  </form>
+
+  <form action="/teachers/<%= index %>/edit" method="GET">
+    <button type="submit">Edit</button>
+  </form>
+  <% }) %>
+</ul>
+
+<h2>Add New Teacher</h2>
+<form action="/teachers" method="POST">
+  <label>
+    Name:
+    <input type="text" name="name" required />
+  </label>
+  <br />
+  <label>
+    Email:
+    <input type="email" name="email" required />
+  </label>
+  <br />
+  <label>
+    Subject:
+    <input type="text" name="subject" required />
+  </label>
+  <br />
+  <label>
+    Years of Experience:
+    <input type="number" name="yearsOfExperience" required />
+  </label>
+  <br />
+  <label>
+    Date of Hire:
+    <input type="date" name="dateOfHire" required />
+  </label>
+  <br />
+  <label>
+    Full Time:
+    <input type="checkbox" name="isFullTime" />
+  </label>
+  <br />
+  <input type="submit" value="Add Teacher" />
+</form>

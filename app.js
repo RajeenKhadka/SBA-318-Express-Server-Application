@@ -4,6 +4,7 @@ const expressLayouts = require("express-ejs-layouts");
 const app = express();
 
 const students = require("./data/students.js");
+const teachers = require("./data/teachers.js");
 
 const port = 3000;
 
@@ -39,9 +40,6 @@ app.use((req, res, next) => {
       req.url
     }`
   );
-  // console.log(req.body);
-  // console.log(Object.keys(req.body));
-  // console.log(`${JSON.stringify(req.body)}`);
 
   if (req.body && Object.keys(req.body).length > 0) {
     console.log(req.body);
@@ -65,6 +63,10 @@ app.get("/students", (req, res) => {
   res.render("students", { students });
 });
 
+app.get("/teachers", (req, res) => {
+  res.render("teachers", { teachers });
+});
+
 //==========================POST=====================================//
 app.post("/students", (req, res) => {
   const newStudent = {
@@ -77,6 +79,21 @@ app.post("/students", (req, res) => {
 
   students.push(newStudent);
   res.redirect("/students");
+});
+
+app.post("/teachers", (req, res) => {
+  const newTeacher = {
+    name: req.body.name,
+    email: req.body.email,
+    teacherID: req.body.teacherID,
+    subject: req.body.subject,
+    yearsOfExperience: req.body.yearsOfExperience,
+    dateOfHire: req.body.dateOfHire,
+    isFullTime: req.body.isFullTime === "on", // If the checkbox is checked, it will be "on"
+  };
+
+  teachers.push(newTeacher);
+  res.redirect("/teachers");
 });
 
 //===========================Edit======================================//
@@ -104,6 +121,35 @@ app.get("/students/:id/edit", (req, res) => {
   res.render("modify", { student: students[studentId], index: studentId });
 });
 
+app.put("/teachers/:id", (req, res) => {
+  const teacherId = parseInt(req.params.id);
+
+  if (teacherId >= 0 && teacherId < teachers.length) {
+    const updatedTeacher = {
+      name: req.body.name,
+      email: req.body.email,
+      teacherID: req.body.teacherID,
+      subject: req.body.subject,
+      yearsOfExperience: req.body.yearsOfExperience,
+      dateOfHire: req.body.dateOfHire,
+      isFullTime: req.body.isFullTime === "on", // If the checkbox is checked, it will be "on"
+    };
+
+    teachers[teacherId] = updatedTeacher;
+    res.redirect("/teachers");
+  } else {
+    res.send("Enter a valid ID");
+  }
+});
+
+app.get("/teachers/:id/edit", (req, res) => {
+  const teacherId = parseInt(req.params.id);
+  res.render("modifyteacher", {
+    teacher: teachers[teacherId],
+    index: teacherId,
+  });
+});
+
 //=============================DELETE===================================//
 
 app.delete("/students/:id", (req, res) => {
@@ -117,6 +163,17 @@ app.delete("/students/:id", (req, res) => {
   }
 });
 
+app.delete("/teachers/:id", (req, res) => {
+  const teacherId = parseInt(req.params.id);
+
+  if (teacherId >= 0 && teacherId < teachers.length) {
+    teachers.splice(teacherId, 1); // Remove the teacher from the array
+    res.redirect("/teachers"); // Redirect to the teachers list page
+  } else {
+    res.send("Enter a valid ID");
+  }
+});
+
 //=============================This always runs at the end======================================//
 app.use((req, res) => {
   console.log(
@@ -125,34 +182,3 @@ app.use((req, res) => {
   res.status(404);
   res.json({ error: "Resources not found" });
 });
-
-//=====================================================================
-// app.get("/modify", (req, res) => {
-//   res.render("modify");
-// });
-
-// app.put("/students/:id", (req, res) => {
-//   const studentId = parseInt(req.params.id);
-
-//   if (req.params.id >= 0 && req.params.id < students.length) {
-//     const updatedStudent = {
-//       name: req.body.name,
-//       email: req.body.email,
-//       studentID: req.body.studentID,
-//       dateOfBirth: req.body.dateOfBirth,
-//       graduated: req.body.graduated === "on",
-//     };
-
-//     students[studentId] = updatedStudent;
-//     res.redirect("/students");
-//   } else {
-//     res.send("Enter a valid ID");
-//   }
-// });
-
-// app.get("/students/:id/edit", (req, res) => {
-//   const studentId = parseInt(req.params.id);
-//   //const student = students[studentId];
-
-//   res.render("modify", { student: students[studentId], index: studentId });
-// });
